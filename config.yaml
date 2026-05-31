@@ -1,0 +1,36 @@
+team: blue
+rx_uri: ip:192.168.2.10
+referee_port: /dev/ttyACM0
+referee_baud: 115200
+referee_source: none
+gateway_state_path: ''
+gateway_tx_requests_path: ''
+manual_stage: jam1
+no_referee: false
+allow_recovered_key_upload: true
+decode_mode: fuzzy_access
+fuzzy_access_max_hamming: 2
+jam_key_min_votes: 2
+recovered_key_vote_windows: 4
+recovered_key_min_candidates: 3
+recovered_key_min_confidence: 0.6
+# 1/2 级干扰波接收窗口，保持较长以保证密钥解析稳定。
+window_s: 1.5
+# 3 级切到 info 信息波后的接收窗口；越小延迟越低，但过小会降低坐标帧命中率。
+info_window_s: 0.75
+loops: 0
+gain_mode: manual
+manual_gain: 35.0
+freq_offset_hz: 0.0
+gain_mu: 0.175
+omega_relative_limit: 0.005
+symbol_freq_error: 0.0048
+dc_blocker_length: 0
+probe_decim: 100
+recent_decode_bits: 240000
+air_bit_order: msb_all
+status_out: runtime/rm2026_wireless_status.json
+quiet: false
+recording:
+  enabled: false
+  dir: recordings/manual_wireless
