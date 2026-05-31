@@ -183,6 +183,3 @@ recording:
 - `recovered_key` 默认只作为诊断信息，只有显式开启 `--allow-recovered-key-upload` 才会上传。
 - 信息波离线解析建议开启 `--rx-preprocess dc_block`，可降低 DC 偏置对 GFSK 解调的影响。
 
-## 致谢
-
-感谢 PnX-HKUST(GZ) RoboMaster 战队在 RM2026 赛季无线链路测试、录波采集和赛场验证中提供的硬件、场地与调试支持。
