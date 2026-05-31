@@ -6,7 +6,7 @@ RM2026 Wireless Link 是 RoboMaster 2026 雷达站无线链路解析模块，用
 
 - 支持 `jam1 -> jam2 -> info` 顺序接收策略。
 - 支持蓝方/红方无线频点和干扰等级参数。
-- 支持 Pluto SDR 实时接收，也支持 `.c64` 录波离线解析。
+- 支持 ANTSDR E200 / Pluto 兼容 IIO 设备实时接收，也支持 `.c64` 录波离线解析。
 - 支持一级、二级干扰波密钥解析与上传。
 - 支持三级后切换信息波解析，输出坐标、血量、经济、占领状态、发弹量、Buff 与哨兵姿态。
 - 支持记录 IQ 原始录波，便于赛后复盘。
@@ -15,7 +15,8 @@ RM2026 Wireless Link 是 RoboMaster 2026 雷达站无线链路解析模块，用
 
 实机运行需要：
 
-- Analog Devices Pluto SDR，用于接收无线波形。
+- ANTSDR E200，用于接收无线波形。
+- 430-440 MHz 频段八木天线，用于增强比赛无线链路接收质量。
 - 裁判系统串口，用于读取干扰等级并上传密钥。
 - Ubuntu/Linux 主机，推荐使用系统 Python 运行 GNU Radio 相关脚本。
 
@@ -29,7 +30,7 @@ RM2026 Wireless Link 是 RoboMaster 2026 雷达站无线链路解析模块，用
 OS: Ubuntu 22.04
 Python: /usr/bin/python3
 GNU Radio: 3.10+
-pyadi-iio / libiio: Pluto SDR 实时接收时需要
+pyadi-iio / libiio: ANTSDR E200 / Pluto 兼容 IIO 设备实时接收时需要
 pyserial: 裁判系统串口通信时需要
 numpy: 离线录波解析时需要
 ```
@@ -61,8 +62,8 @@ env -u PYTHONHOME -u PYTHONPATH /usr/bin/python3 ...
     ├── protocol.py                   # RM2026 空口帧与裁判帧协议
     ├── decoder.py                    # bit 流扫描、partial frame 恢复、信息波字段提取
     ├── field_recording.py            # `.c64` 录波离线 GFSK 解调
-    ├── pluto_rx.py                   # Pluto SDR 实时接收 flowgraph
-    ├── pluto_ensm.py                 # Pluto ENSM 状态控制
+    ├── pluto_rx.py                   # IIO SDR 实时接收 flowgraph
+    ├── pluto_ensm.py                 # IIO SDR ENSM 状态控制
     ├── referee_link.py               # 裁判系统串口通信与发包
     └── sequential_receiver.py        # 比赛状态机：按裁判等级切换 jam/info
 ```
@@ -83,7 +84,7 @@ env -u PYTHONHOME -u PYTHONPATH /usr/bin/python3 \
 常用参数：
 
 - `--team blue/red`：选择己方颜色，对应不同官方频点。
-- `--rx-uri ip:192.168.2.10`：Pluto SDR 地址。
+- `--rx-uri ip:192.168.2.10`：SDR 设备地址。
 - `--referee-port /dev/ttyACM0`：裁判系统串口。
 - `--status-out runtime/wireless_status.json`：持续写出的无线状态文件。
 - `--window-s 1.5`：一级/二级干扰波接收窗口。
@@ -181,3 +182,7 @@ recording:
 - RX CRC8 自动识别，兼容历史录波。
 - `recovered_key` 默认只作为诊断信息，只有显式开启 `--allow-recovered-key-upload` 才会上传。
 - 信息波离线解析建议开启 `--rx-preprocess dc_block`，可降低 DC 偏置对 GFSK 解调的影响。
+
+## 致谢
+
+感谢 PnX-HKUST(GZ) RoboMaster 战队在 RM2026 赛季无线链路测试、录波采集和赛场验证中提供的硬件、场地与调试支持。
